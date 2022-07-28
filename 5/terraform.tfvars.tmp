@@ -1,0 +1,10 @@
+demovpc1_cidr = "10.0.0.0/16"
+demovpc1_name = "demovpc1"
+demovpc1_ten  = "default"
+
+subnet_list = [
+  {
+    sub_name = "demosubnet1"
+    sub_cidr = "10.0.1.0/24"
+  }
+]

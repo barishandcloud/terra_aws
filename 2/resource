@@ -1,0 +1,71 @@
+provider "aws" {
+  region = "ap-south-1"
+}
+
+
+terraform {
+  backend "s3" {
+    bucket = "terrademo-01122021"
+    key    = "2_tfstate"
+    region = "ap-south-1"
+  }
+}
+
+
+### create variables ##
+
+variable "demovpc1_cidr" {
+  description = "subnet1 cidr"
+  type        = string
+  default     = "10.0.0.0/16"
+}
+
+variable "demovpc1_name" {
+  description = "subnet1 cidr"
+  type        = string
+  default     = "demovpc1"
+}
+
+variable "demovpc1_ten" {
+  description = "subnet1 cidr"
+  type        = string
+  default     = "default"
+}
+
+
+resource "aws_vpc" "demovpc1" {
+  cidr_block       = var.demovpc1_cidr
+  instance_tenancy = var.demovpc1_ten
+
+  tags = {
+    Name = var.demovpc1_name
+  }
+}
+
+variable "sub1_cidr" {
+  description = "subnet1 cidr"
+  type        = string
+  default     = "10.0.1.0/24"
+}
+
+variable "sub1_name" {
+  description = "subnet1 name"
+  type        = string
+  default     = "demosubnet1"
+}
+
+############### subnets ###############
+resource "aws_subnet" "demosubnet1" {
+  vpc_id     = aws_vpc.demovpc1.id
+  cidr_block = var.sub1_cidr
+
+  tags = {
+    Name = var.sub1_name
+  }
+}
+
+############### outputs ###############
+output "demovpc1_arn" {
+  value = aws_vpc.demovpc1.arn
+}
+#terraform destroy at this point
